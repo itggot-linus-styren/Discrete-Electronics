@@ -27,9 +27,23 @@ header {
     justify-content: flex-end;
 }
 
+.searchbar {
+    display: flex;
+    flex-direction: row;
+}
+
 .searchbar > a {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    align-content: center;
+}
+
+.searchbar > a > img {
+    opacity: 0;
+}
+
+.searchbar > a > svg {
+    fill: white;
 }
 
 #drawer-toggle {
@@ -68,6 +82,54 @@ header {
 
 .grid-canvas {
     display: none;
+}
+
+#wiki-search {
+    background: transparent;
+    outline: 0;
+    border: none;
+    border-bottom: 2px white solid;
+}
+
+.inner {
+    padding-bottom: 1px;
+    border-bottom: 1px white solid;
+}
+
+.search-results {
+    -webkit-transition: all .25s ease;
+    -moz-transition: all .25s ease;
+    -ms-transition: all .25s ease;
+    -o-transition: all .25s ease;
+    transition: all .25s ease;
+    list-style-type: none;
+    position: absolute;
+    top: 32px;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    visibility:hidden;
+    border-radius: 3px;
+    text-indent: 10px;
+    line-height: 32px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    width: 140px;
+}
+
+.search-results a {
+  display: block;
+}
+
+.search-results a:hover {
+  background: #e8e8e8;
+}
+
+.search-results:hover,
+#wiki-search:focus ~ .search-results:not(:empty) {    
+  opacity: 1;
+  visibility:visible;
+  top: 42px;
 }
 
 @media screen and (device-width: 360px) and (device-height: 640px), screen and (device-height: 360px) and (device-width: 640px) {

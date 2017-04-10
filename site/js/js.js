@@ -39,13 +39,45 @@ $(function () {
     canvas = document.querySelector (".sandbox");
     gridCanvas = document.querySelector (".grid-canvas");
     ctx = canvas.getContext ("2d");
-
+/*
     var mql = window.matchMedia('screen and (device-width: 360px) and (device-height: 640px), screen and (device-height: 360px) and (device-width: 640px)');
     mql.addEventListener(
         function(mq) {
             is_mobile = mq.matches;
         }
-    );
+    );*/
+
+    /* Converts SVG files to inline SVG
+     * see http://stackoverflow.com/a/11978996/3013334 for more information
+     */
+    $('img.svg').each(function(){
+        var $img = jQuery(this);
+        var imgID = $img.attr('id');
+        var imgClass = $img.attr('class');
+        var imgURL = $img.attr('src');
+
+        jQuery.get(imgURL, function(data) {
+            // Get the SVG tag, ignore the rest
+            var $svg = jQuery(data).find('svg');
+
+            // Add replaced image's ID to the new SVG
+            if(typeof imgID !== 'undefined') {
+                $svg = $svg.attr('id', imgID);
+            }
+            // Add replaced image's classes to the new SVG
+            if(typeof imgClass !== 'undefined') {
+                $svg = $svg.attr('class', imgClass+' replaced-svg');
+            }
+
+            // Remove any invalid XML tags as per http://validator.w3.org
+            $svg = $svg.removeAttr('xmlns:a');
+
+            // Replace image with new SVG
+            $img.replaceWith($svg);
+
+        }, 'xml');
+
+    });
 });
 
 function openPage (id) {

@@ -12,14 +12,13 @@
         <input type="checkbox" id="drawer-toggle" name="drawer-toggle"/>
         <label for="drawer-toggle" id="drawer-toggle-label"></label>
         <header>
-            <a onclick="toggleSearch()"><img src="./img/ic_search_black_24px.svg"></img></a>
             <div class="searchbar">
-                <a onclick="toggleSearch(false)"><img src="./img/ic_close_black_24px.svg"></img></a>
+                <a href="#" onclick="toggleSearch(false)"><img class="svg" src="./img/ic_search_black_24px.svg"></img></a>
                 <div class="inner">
-                    <input id="wiki-search" type=text name=s autocomplete="off"> <!-- https://css-tricks.com/webkit-html5-search-inputs/ -->
-                    <ul class="search-results">
-                    </ul>
+                    <input id="wiki-search" type=text name=s autocomplete="off" placeholder="Search wiki..."> <!-- https://css-tricks.com/webkit-html5-search-inputs/ -->
+                    <ul class="search-results"></ul>
                 </div>
+                <a href="#" onclick="toggleSearch()"><img class="svg" src="./img/ic_close_black_24px.svg"></img></a>
             </div>
         </header>
         <div class="scrim"></div>
