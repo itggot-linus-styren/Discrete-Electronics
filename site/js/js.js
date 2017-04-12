@@ -1,5 +1,6 @@
 /* Global variables */
 var previousPage = null;
+var previousSelected = null;
 
 var hasLoadedArticles = false;
 var articles = {};
@@ -79,6 +80,23 @@ $(function () {
 
     });
 });
+
+function toggleSearch (toggle) {
+    console.log (toggle);
+    if ($(".searchbar").hasClass ("closed") != toggle) return;
+
+    if (toggle) $(".searchbar").removeClass ("closed");
+    else $(".searchbar").addClass ("closed");
+}
+
+function select (a) {
+    if (previousSelected == a) return;
+    if (previousSelected != null) {
+        $(previousSelected).removeClass ("selected");
+    }
+    $(a).addClass ("selected");
+    previousSelected = a;
+}
 
 function openPage (id) {
     $('#drawer-toggle').prop('checked', false);

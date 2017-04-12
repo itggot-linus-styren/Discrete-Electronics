@@ -27,23 +27,59 @@ header {
     justify-content: flex-end;
 }
 
+header a {
+    outline: 0;
+}
+
 .searchbar {
     display: flex;
     flex-direction: row;
+    margin-right: 24px;
+    transition: transform 0.15s ease-in;
 }
 
 .searchbar > a {
     display: flex;
     justify-content: center;
     align-content: center;
+    z-index: 3;
 }
 
 .searchbar > a > img {
     opacity: 0;
 }
 
-.searchbar > a > svg {
-    fill: white;
+.searchbar.closed {
+    transform: translateX(calc(100% - 24px));
+}
+
+.searchbar.closed ~ .close {
+    opacity: 0;
+    pointer-events: none;
+}
+
+header .svg {
+    fill: #909090;
+}
+
+header > .close {
+    position: absolute;
+    right: 24px;
+    left: calc(100% - 48px);
+    top: calc((100% - 24px) / 2 - 4px);
+    bottom: calc((100% - 24px) / 2 + 4px);
+}
+
+header > .block {
+    position: absolute;
+    background-color: #d7d7d7;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: calc(100% - 24px);
+    margin: 0;
+    padding: 0;
+    z-index: 2;
 }
 
 #drawer-toggle {
@@ -52,12 +88,37 @@ header {
 }
 
 .drawer {
+    width: 340px;
     height: 100%;
     display: flex;
     z-index: 2;
-    background: #ffffff;
+    background: #fafafa;
     justify-content: flex-start;
     flex-direction: column;
+    box-shadow: 0 0 16px #858585;
+}
+
+.drawer > h1 {
+    color: #909090;
+    font-size: 20px;
+    padding-left: 54px;
+    font-style: bold;
+    line-height: 0;
+    padding-top: 21px;
+    padding-bottom: 5px;
+}
+
+.drawer > ._hr {
+    padding-top: 8px;
+    padding-bottom: 8px; 
+}
+
+.drawer > ._hr > hr {
+    border: none;
+    height: 1px;
+    color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 .drawer > ul {
@@ -67,12 +128,49 @@ header {
     display: flex;
     list-style-type: none;
     flex-direction: column;
+    padding-left: 54px;
+}
+
+.drawer > ul > li {
+    padding-top: 8px;
+    padding-bottom: 8px; 
+}
+
+.drawer > ul > li > a {
+    color: #000;
+    text-decoration: none;
+    outline: 0;
+}
+
+.drawer > ul > li > a:not(.selected):hover {
+    color: #909090;
+}
+
+.drawer > ul > li > .selected {
+    color: #2196f3;
 }
 
 .content {
     width: 100%;
     overflow-y: auto;
     padding-top: 75px;
+    margin-left: 24px;
+}
+
+.content h1 {
+    color: #909090;
+}
+
+.content h2 {
+    color: #a0a0a0;
+}
+
+.content p {
+    color: #959595;
+}
+
+#sandbox-container {
+    margin: 0;
 }
 
 .canvas {
@@ -87,8 +185,30 @@ header {
 #wiki-search {
     background: transparent;
     outline: 0;
+    color: white;
+    font-family: Roboto;
     border: none;
     border-bottom: 2px white solid;
+}
+
+#wiki-search::-webkit-input-placeholder {
+    color: #ffffff !important;
+    opacity: 0.85;
+}
+
+#wiki-search::-moz-placeholder {
+    color: #ffffff !important;
+    opacity: 0.85;
+}
+
+#wiki-search:-moz-placeholder {
+    color: #ffffff !important;
+    opacity: 0.85;
+}
+
+#wiki-search:-ms-input-placeholder {
+    color: #ffffff !important;
+    opacity: 0.85;
 }
 
 .inner {
