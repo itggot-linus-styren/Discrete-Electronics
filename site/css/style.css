@@ -272,7 +272,7 @@ header > .block {
 }
 
 .desktop-specific {
-    display: block !important;
+    display: block;
 }
 
 .mobile-specific {
@@ -286,7 +286,7 @@ header > .block {
     }
 
     .mobile-specific {
-        display: block !important;
+        display: block;
     }
 
      #drawer-toggle-label {
