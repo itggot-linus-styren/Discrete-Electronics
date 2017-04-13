@@ -153,8 +153,14 @@ header > .block {
 .content {
     width: 100%;
     overflow-y: auto;
-    padding-top: 75px;
+    margin-top: 75px;
     margin-left: 24px;
+    padding-right: 24px;
+}
+
+.content > .wiki-article > img, .content > .wiki-article > p {
+    float: left;
+    display: inline !important;
 }
 
 .content h1 {
@@ -170,7 +176,8 @@ header > .block {
 }
 
 #sandbox-container {
-    margin: 0;
+    margin-left: 0;
+    padding-right: 0;
 }
 
 .canvas {
@@ -239,20 +246,49 @@ header > .block {
 
 .search-results a {
   display: block;
+  color: #000;
+  text-decoration: none;
 }
 
 .search-results a:hover {
   background: #e8e8e8;
+  color: #303030;
 }
 
 .search-results:hover,
-#wiki-search:focus ~ .search-results:not(:empty) {    
+#wiki-search:focus ~ .search-results:not(:empty):not(.searched) {    
   opacity: 1;
   visibility:visible;
   top: 42px;
 }
 
+.article-list > li > a {
+    text-decoration: none;
+    color: #000;
+    outline: 0;
+}
+
+.article-list > li > a:hover {
+    color: #909090;
+}
+
+.desktop-specific {
+    display: block !important;
+}
+
+.mobile-specific {
+    display: none !important;
+}
+
 @media screen and (device-width: 360px) and (device-height: 640px), screen and (device-height: 360px) and (device-width: 640px) {
+
+    .desktop-specific {
+        display: none !important;
+    }
+
+    .mobile-specific {
+        display: block !important;
+    }
 
      #drawer-toggle-label {
        align-self: flex-start;
@@ -265,6 +301,7 @@ header > .block {
        user-select: none;
        left: 0px;
        height: 50px;
+       top: calc((75px - 50px) / 2);
        width: 50px;
        display: block;
        position: fixed;
@@ -285,6 +322,7 @@ header > .block {
      }
 
     .drawer {
+       transition: all 0.25s ease-out;
        display: block;
        position: fixed;
        visibility: hidden;
@@ -327,6 +365,7 @@ header > .block {
         opacity: 0;
         z-index: 2;
         pointer-events: none;
+        transition: opacity 0.25s linear;
     }
 
 }

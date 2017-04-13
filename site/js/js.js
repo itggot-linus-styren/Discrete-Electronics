@@ -13,6 +13,14 @@ var canvas;
 var ctx;
 var lastTime = (new Date()).getTime();
 
+var rstartx;
+var rstarty;
+var rendx;
+var rendy;
+var mouse_down = false;
+
+var lines = [];
+
 /* Webkit stuff */
 var vendors = ['webkit', 'moz'];
 for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
@@ -37,6 +45,9 @@ $(function () {
 
     $(".content").hide ();
     openPage ("#home-container");
+    previousSelected = $(".drawer > ul")[0].children[0].children[0];
+    $(previousSelected).addClass ("selected");
+
     canvas = document.querySelector (".sandbox");
     gridCanvas = document.querySelector (".grid-canvas");
     ctx = canvas.getContext ("2d");
@@ -47,6 +58,33 @@ $(function () {
             is_mobile = mq.matches;
         }
     );*/
+
+
+    canvas.onselectstart = function() { return false; };
+    canvas.unselectable = "on";
+    canvas.style.MozUserSelect = "none";
+    canvas.style.webkitUserSelect = "none";
+
+    canvas.onmousedown = function (e) {
+        var mpos = getMousePos (e);
+        var start_x = mpos.x;
+        var start_y = mpos.y;
+        rstartx = Math.floor (start_x / 40) * 40 + 20;
+        rstarty = Math.floor (start_y / 40) * 40 + 20;
+        mouse_down = true;
+    }
+
+    canvas.onmouseup = function () {
+        lines.push({sx: rstartx, sy: rstarty, ex: rendx, ey: rendy});
+        mouse_down = false;
+    }
+
+    canvas.onmousemove = function (e) {
+        var mpos = getMousePos (e);
+
+        rendx = Math.floor (mpos.x / 40) * 40 + 20;
+        rendy = Math.floor (mpos.y / 40) * 40 + 20;
+    }
 
     /* Converts SVG files to inline SVG
      * see http://stackoverflow.com/a/11978996/3013334 for more information
@@ -79,11 +117,30 @@ $(function () {
         }, 'xml');
 
     });
+
+    $("#wiki-search").on ('keyup', function (e) {
+        if (e.keyCode == 13) { /* on enter pressed */
+            search ();
+        }
+    });
+
+    $("#wiki-search").on ('click', function (e) {
+        $(".search-results").removeClass ("searched");
+    });
 });
 
+function search () {
+    var searchResults = $(".search-results > li");
+    if (searchResults.length > 0) {
+        searchResults[0].children[0].click ();
+        $(".search-results").addClass ("searched");
+    }
+}
+
 function toggleSearch (toggle) {
-    console.log (toggle);
-    if ($(".searchbar").hasClass ("closed") != toggle) return;
+    if (toggle && !$(".searchbar").hasClass ("closed")) {
+        search ();
+    }
 
     if (toggle) $(".searchbar").removeClass ("closed");
     else $(".searchbar").addClass ("closed");
@@ -134,6 +191,7 @@ function onSearch (searchTerm) {
         $(".search-results").html ("");
         return;
     }
+    $(".search-results").removeClass ("searched");
 
     if (!hasLoadedArticles) {
         hasLoadedArticles = true;
@@ -167,6 +225,14 @@ $('#wiki-search').on('input', function() {
     onSearch ($(this).val());
 });
 
+function getMousePos (evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
 function canvasDraw () {
     if (!doRefreshCanvas) return;
 
@@ -188,10 +254,43 @@ function canvasDraw () {
     var pos_x3 = Math.round(canvas.width / 40) * 40 - 40 * tilesFromEdgeX - 20;
     var pos_y3 = Math.ceil((pos_y1 + pos_y2) / 80) * 40 - 20 - 5;
 
+
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+
+    for (var i = 0; i  < lines.length; i++) {
+        var line = lines[i];
+        ctx.beginPath ();
+        ctx.moveTo (line.sx, line.sy);
+        ctx.lineTo (line.sx, line.ey);
+        ctx.stroke ();
+
+        ctx.beginPath ();
+        ctx.moveTo (line.sx, line.ey);
+        ctx.lineTo (line.ex, line.ey);
+        ctx.stroke ();
+    }
+
+    if (mouse_down) {
+        ctx.beginPath ();
+        ctx.moveTo (rstartx, rstarty);
+        ctx.lineTo (rstartx, rendy);
+        ctx.stroke ();
+
+        ctx.beginPath ();
+        ctx.moveTo (rstartx, rendy);
+        ctx.lineTo (rendx, rendy);
+        ctx.stroke ();
+    }
+
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 1;
+    ctx.lineCap = "round";
+
     ctx.beginPath();
     ctx.arc(pos_x1, pos_y1, 10, 0, Math.PI*2, true);
     ctx.closePath();
-    ctx.strokeStyle = 'black';
     ctx.stroke();
 
     ctx.font = '11px Roboto';
@@ -200,7 +299,6 @@ function canvasDraw () {
     ctx.beginPath();
     ctx.arc(pos_x2,  pos_y2, 10, 0, Math.PI*2, true);
     ctx.closePath();
-    ctx.strokeStyle = 'black';
     ctx.stroke();
 
     ctx.fillText ("IN 2", pos_x2 - 9, pos_y2 + 22);
