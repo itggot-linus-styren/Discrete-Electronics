@@ -276,7 +276,7 @@ header > .block {
 }
 
 .mobile-specific {
-    display: none !important;
+    display: none;
 }
 
 @media screen and (device-width: 360px) and (device-height: 640px), screen and (device-height: 360px) and (device-width: 640px) {
@@ -286,7 +286,7 @@ header > .block {
     }
 
     .mobile-specific {
-        display: block;
+        display: block !important;
     }
 
      #drawer-toggle-label {
