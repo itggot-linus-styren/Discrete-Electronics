@@ -74,9 +74,21 @@ $(function () {
         mouse_down = true;
     }
 
+    canvas.ontouchstart = function (e) { 
+        var start_x = e.targetTouches[0].pageX;
+        var start_y = e.targetTouches[0].pageY;
+        rstartx = Math.floor (start_x / 40) * 40 + 20;
+        rstarty = Math.floor (start_y / 40) * 40 + 20;
+        mouse_down = true;
+    }
+
     canvas.onmouseup = function () {
         lines.push({sx: rstartx, sy: rstarty, ex: rendx, ey: rendy});
         mouse_down = false;
+    }
+
+    canvas.ontouchend = function () {
+        canvas.onmouseup ();
     }
 
     canvas.onmousemove = function (e) {
@@ -84,6 +96,11 @@ $(function () {
 
         rendx = Math.floor (mpos.x / 40) * 40 + 20;
         rendy = Math.floor (mpos.y / 40) * 40 + 20;
+    }
+
+    canvas.ontouchmove = function (e) {
+        rendx = Math.floor (e.targetTouches[0].pageX / 40) * 40 - 20;
+        rendy = Math.floor (e.targetTouches[0].pageY / 40) * 40 - 20;
     }
 
     /* Converts SVG files to inline SVG

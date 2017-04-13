@@ -158,9 +158,8 @@ header > .block {
     padding-right: 24px;
 }
 
-.content > .wiki-article > img, .content > .wiki-article > p {
+.content > .wiki-article > img {
     float: left;
-    display: inline !important;
 }
 
 .content h1 {
